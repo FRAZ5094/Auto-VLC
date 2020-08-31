@@ -2,6 +2,7 @@ import vlc
 import glob
 import json
 import os
+from time import sleep
 
 json_file_name="settings.json"
 
@@ -47,14 +48,24 @@ else:
     print(settings)
 
 
-files=glob.glob("Original/*.mkv")
+episodes=glob.glob("*.mkv")
 
 if "episode" in settings.keys():
     current_episode=settings["episode"]
+    for i,episode in enumerate(episodes):
+        if episode==current_episode:
+            episode_i=i
 else:
-    current_episode=files[0]
+    current_episode=episodes[0]
+    episode_i=0
 
-#on_quit(current_episode,settings)
+
+video=vlc.MediaPlayer(current_episode)
+video.play()
+video.audio_set_mute(False)
+
+while True:
+    sleep(100)
 
 
 
