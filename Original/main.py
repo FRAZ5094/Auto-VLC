@@ -69,7 +69,7 @@ def while_video_playing_loop():
     max_length=video.get_length()
     max_time_format=time.strftime("%M:%S",time.gmtime(int(max_length/1000)))
     status_bar.config(text=f"{format_current_time}/{max_time_format}")
-
+    episode_label.config(text=current_episode)
     if current_time<int(settings["start"]):
         video.set_time(int(settings["start"])+10)
         print("skip")
@@ -83,7 +83,7 @@ def while_video_playing_loop():
 
 root=Tk()
 root.title("Video player")
-root.geometry("200x100")
+root.geometry("300x300")
 
 controls_frame=Frame(root)
 controls_frame.pack()
@@ -120,6 +120,7 @@ def play():
     video.set_time(int(settings["time"]))
     video.audio_set_track(2)
     video.video_set_spu(3)
+    video.set_fullscreen(True)
     while_video_playing_loop()
 
 def next():
@@ -133,10 +134,11 @@ def next():
     time.sleep(1)
     video.audio_set_track(2)
     video.video_set_spu(3)
+    video.set_fullscreen(True)
 
 pause_btn=Button(controls_frame,text="Pause",command=video.pause)
 next_btn=Button(controls_frame,text="Next",command=next)
-
+episode_name=Label(root)
 
 pause_btn.grid(row=0,column=1)
 next_btn.grid(row=0,column=2)
@@ -153,7 +155,8 @@ status_bar.pack(fill=X,side=BOTTOM,ipady=2)
 
 my_slider=ttk.Scale(root,from_=0,to=100,orient=HORIZONTAL,value=0,command=slide,length=150)
 my_slider.pack(pady=20)
-
+episode_label=Label(root,text="")
+episode_label.pack(pady=10)
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
 
