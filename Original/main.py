@@ -89,11 +89,13 @@ controls_frame=Frame(root)
 controls_frame.pack()
 
 def on_press(key):
-    print(key)
+    #print(key)
     if str(key)=="Key.right":
         forward()
-    if str(key)=="Key.left":
+    elif str(key)=="Key.left":
         backward()
+    elif str(key)=="Key.space":
+        video.pause()
 
 
 def slide(pos):
