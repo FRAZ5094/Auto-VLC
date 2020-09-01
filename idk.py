@@ -20,7 +20,7 @@ def while_video_playing_loop():
     if max_length!=0:
         my_slider.config(value=int(current_time*100/max_length))
 
-    status_bar.after(50,while_video_playing_loop)
+    status_bar.after(100,while_video_playing_loop)
 
 global video
 video=vlc.MediaPlayer("Original/[AnimeRG] Naruto - 001 Enter Naruto Uzumaki! [720p] [x265] [pseudo].mkv")
