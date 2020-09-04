@@ -51,6 +51,8 @@ else:
     print(settings)
 
 episodes=glob.glob("*.mkv")
+episodes=sorted(episodes,key=lambda x:[int(i) for i in x.split() if i.isdigit()])
+print(episodes)
 
 if "episode" in settings.keys():
     current_episode=settings["episode"]
