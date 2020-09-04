@@ -1,18 +1,25 @@
 from pynput import keyboard
 from time import sleep
+import sys
 def on_press(key):
-    print(f"pressed: {key}")
+    print(key)
+    try:
+        if key.char=="e":
+            print("pressed e")
+        if key.char=="q":
+            listener.stop()
+            print("exited")
+            sys.exit(0)
 
-def on_release(key):
-    pass
+    except:
+        print(key)
 
-def check_time():
-    print("checking time")
-    sleep(1)
-    check_time()
-
-# ...or, in a non-blocking fashion:
 listener = keyboard.Listener(on_press=on_press)
 
 listener.start()
-check_time()
+
+try:
+    while True:
+        sleep(100)
+except:
+    listener.stop()

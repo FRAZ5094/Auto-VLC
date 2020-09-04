@@ -47,12 +47,12 @@ if settings=={}:
     print("no settings file")
     settings=set_up_settings()
 else:
-    print("settings file")
-    print(settings)
+    print("settings file present")
+    #print(settings)
 
 episodes=glob.glob("*.mkv")
 episodes=sorted(episodes,key=lambda x:[int(i) for i in x.split() if i.isdigit()])
-print(episodes)
+#print(episodes)
 
 if "episode" in settings.keys():
     current_episode=settings["episode"]
@@ -74,7 +74,7 @@ def while_video_playing_loop():
     episode_label.config(text=current_episode)
     if current_time<int(settings["start"]):
         video.set_time(int(settings["start"])+10)
-        print("skip")
+        #print("skip")
     elif current_time>=max_length-int(settings["from_end"]) and max_length!=0:
         next()
 
@@ -91,14 +91,18 @@ controls_frame=Frame(root)
 controls_frame.pack()
 
 def on_press(key):
-    #print(key)
-    if str(key)=="Key.right":
-        forward()
-    elif str(key)=="Key.left":
-        backward()
-    elif str(key)=="Key.space":
-        video.pause()
-
+    try:
+        if key.char=="m":
+            video.audio_toggle_mute()
+    except: 
+        if str(key)=="Key.right":
+            forward()
+        elif str(key)=="Key.left":
+            backward()
+        elif str(key)=="Key.space":
+            video.pause()
+        elif str(key)=="Key.esc":
+            video.toggle_fullscreen()
 
 def slide(pos):
     video.set_position(float(pos)/100)
@@ -123,14 +127,15 @@ def play():
     video.audio_set_track(2)
     video.video_set_spu(3)
     video.set_fullscreen(True)
+    print(current_episode)
     while_video_playing_loop()
 
 def next():
     global episode_i,video,current_episode
     episode_i+=1
-    print("inc episode_i")
     video.stop()
     current_episode=episodes[episode_i]
+    print(current_episode)
     video=vlc.MediaPlayer(episodes[episode_i])
     video.play()
     time.sleep(1)
@@ -171,22 +176,3 @@ video.audio_set_mute(False)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
-
-
-#media=vlc.MediaPlayer("Episode100.mkv")
-
-"""
-media.get_time()
-media.set_time()#im ms
-media.set_position from 0 to 1.0
-media.video_set_spu()
-
-media.audio_get_track_description() #get available audio tracks
-media.video_get_track_description()
-
-media.audo_toggle_mute()
-media.audio_set_track()
-media.video_set_crop_geometry(psz_geometry)
-
-end 2:20 from end
-"""
