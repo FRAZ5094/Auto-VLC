@@ -153,6 +153,9 @@ def next():
     video.play()
     time.sleep(1)
     set_sub_dub()
+    settings["episode"]=current_episode
+    settings["time"]=0
+    write_to_json(settings)
     video.set_fullscreen(True)
 
 
