@@ -43,6 +43,20 @@ def set_up_settings():
 
 settings=read_json()
 
+def set_sub_dub():
+    global video
+    subs=video.video_get_spu_description()
+    langs=video.audio_get_track_description()
+
+    for sub in subs:
+        if b"english" in sub[1].lower():
+            video.video_set_spu(sub[0])
+
+    for lang in langs:
+        if b"japanese" in lang[1].lower():
+            video.audio_set_track(lang[0])
+            print(lang[0])
+
 if settings=={}:
     print("no settings file")
     settings=set_up_settings()
@@ -124,8 +138,7 @@ def play():
     video.play()
     time.sleep(1)
     video.set_time(int(settings["time"]))
-    video.audio_set_track(2)
-    video.video_set_spu(3)
+    set_sub_dub()
     video.set_fullscreen(True)
     print(current_episode)
     while_video_playing_loop()
@@ -139,9 +152,9 @@ def next():
     video=vlc.MediaPlayer(episodes[episode_i])
     video.play()
     time.sleep(1)
-    video.audio_set_track(2)
-    video.video_set_spu(3)
+    set_sub_dub()
     video.set_fullscreen(True)
+
 
 pause_btn=Button(controls_frame,text="Pause",command=video.pause)
 next_btn=Button(controls_frame,text="Next",command=next)
