@@ -10,8 +10,10 @@ def on_press(key):
             listener.stop()
             print("exited")
             sys.exit(0)
-
+        if str(key)=="<104>":
+            print("pressed up arrow") 
     except:
+        print("key.char doesnt work")
         print(key)
 
 listener = keyboard.Listener(on_press=on_press)
